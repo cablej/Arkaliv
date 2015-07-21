@@ -1,5 +1,7 @@
 <?php
 
+define("NUM_LINKS", 25);
+
 function cryptPass($input, $rounds = 12){ //Sequence - cryptPass, save hash in db, crypt(input, hash) == hash
 	$salt = "";
 	$saltChars = array_merge(range('A','Z'), range('a','z'), range(0,9));
@@ -28,7 +30,7 @@ function signIn($username, $password, $mysqli) {
 	}
 }
 
-function createUser($username, $hashedPass, $mysqli) {
+function createUser($username, $newPass, $mysqli) {
 	$hashedPass = cryptPass($newPass);
 	$sql = "SELECT `username` FROM `Users` WHERE username = '$username'";
 	if($result = $mysqli->query($sql)) {
@@ -51,11 +53,13 @@ function getmysqli() {
 	return $mysqli;
 }
 
-function getLinks($sort, $mysqli) {
+function getLinks($sort, $page, $mysqli) {
 
 	$sort_type = getSortType($sort);
 	
-	$sql = "SELECT * FROM `Links` ORDER BY $sort_type";
+	$start_from = ($page-1) * NUM_LINKS;
+	
+	$sql = "SELECT * FROM `Links` ORDER BY $sort_type LIMIT $start_from, " . NUM_LINKS;
 
 	$links = query($sql, $mysqli);
 	
@@ -192,13 +196,14 @@ function hasComments($comments, $comment) {
 	return false;
 }
 
-function uploadLink($url, $title, $author, $bloggerName, $mysqli) {
+function uploadPost($url, $title, $text, $author, $bloggerName, $mysqli) {
 	
 	$id = substr(md5(microtime()),rand(0,26),6);
 	
 	$isBlogPost = $bloggerName != "";
+	$isSelf = $text != "";
 	
-	$sql = "INSERT INTO `Links`(`id`, `url`, `title`, `isBlogPost`, `bloggerName`, `author`) VALUES ('$id', '$url', '$title', '$isBlogPost', '$bloggerName', '$author')";
+	$sql = "INSERT INTO `Links`(`id`, `url`, `selfText`, `title`, `isBlogPost`, `isSelf`, `bloggerName`, `author`) VALUES ('$id', '$url', '$text', '$title', '$isBlogPost', '$isSelf', '$bloggerName', '$author')";
 	if($mysqli->query($sql)) {
 		
 		return getLink($id, "new", $mysqli);

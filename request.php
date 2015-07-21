@@ -45,6 +45,9 @@ switch ($action) {
 		echo(json_encode($link, JSON_UNESCAPED_SLASHES));
 		break;
 	case "GetLinks":
+		$page = (int) $_POST['page'];
+		if($page == 0) $page = 1;
+	
 		$sort = "new";
 		if(isSet($_POST['sort'])) {
 			$sort = $_POST['sort'];
@@ -52,7 +55,7 @@ switch ($action) {
 		if(!preg_match($ck_sort, $sort)) {
 			error("id is not valid");
 		}
-		$links = getLinks($sort, $mysqli);
+		$links = getLinks($sort, $page, $mysqli);
 
 		echo(json_encode($links, JSON_UNESCAPED_SLASHES));
 
@@ -88,18 +91,20 @@ switch ($action) {
 
 		echo(json_encode($returnValue, JSON_UNESCAPED_SLASHES));
 		break;
-	case "UploadLink":
+	case "UploadPost":
 		$url = $_POST['url'];
 		$title = $_POST['title'];
 		$key = $_POST['key'];
+		$text = $_POST['text'];
 		$bloggerName = $_POST['bloggerName'];
-		if(!preg_match($ck_url, $url) || !preg_match($ck_key, $key)) {
+		if(($text == "" && !preg_match($ck_url, $url)) || !preg_match($ck_key, $key)) {
 			error("url contains illegal characters");
 		}
 		$user = getUser($key, $mysqli);
 		$title = $mysqli->real_escape_string($title);
 		$bloggerName = $mysqli->real_escape_string($bloggerName);
-		$result = uploadLink($url, $title, $user, $bloggerName, $mysqli);
+		$text = $mysqli->real_escape_string($text);
+		$result = uploadPost($url, $title, $text, $user, $bloggerName, $mysqli);
 		echo(json_encode($result));
 		break;
 	case "GetBloggers":
