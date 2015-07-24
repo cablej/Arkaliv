@@ -1,7 +1,10 @@
 <?php
 
+require_once('dbInfo.php');
+
 define("NUM_LINKS", 25);
 
+//encrypts the given password
 function cryptPass($input, $rounds = 12){ //Sequence - cryptPass, save hash in db, crypt(input, hash) == hash
 	$salt = "";
 	$saltChars = array_merge(range('A','Z'), range('a','z'), range(0,9));
@@ -11,7 +14,7 @@ function cryptPass($input, $rounds = 12){ //Sequence - cryptPass, save hash in d
 	return crypt($input, sprintf('$2y$%02d$', $rounds) . $salt);
 }
 
-
+//signs in a user with the username and password given
 function signIn($username, $password, $mysqli) {
 	$sql = "SELECT `username`, `password` FROM `Users` WHERE username = '$username'";
 	$row = query_one($sql, $mysqli);
@@ -30,6 +33,7 @@ function signIn($username, $password, $mysqli) {
 	}
 }
 
+//creates a user with the username and password given
 function createUser($username, $newPass, $mysqli) {
 	$hashedPass = cryptPass($newPass);
 	$sql = "SELECT `username` FROM `Users` WHERE username = '$username'";
@@ -48,8 +52,9 @@ function createUser($username, $newPass, $mysqli) {
 	}
 }
 
+//returns the database used
 function getmysqli() {
-	$mysqli = new mysqli("sql308.byethost10.com", "b10_16388530", "Password changed to protect the innocent", "b10_16388530_arkaliv");
+	$mysqli = new mysqli(MYSQLI_HOST, MYSQLI_USERNAME, MYSQLI_PASSWORD, MYSQLI_DB_NAME);
 	return $mysqli;
 }
 
