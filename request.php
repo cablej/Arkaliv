@@ -41,7 +41,11 @@ switch ($action) {
 		if(!preg_match($ck_id, $id)) {
 			error("id is not valid");
 		}
-		$link = getLink($id, $sort,$mysqli);
+		
+		$key = $_POST['key'];
+		$user = getUser($key, $mysqli, false);
+		
+		$link = getLink($id, $sort, $user, $mysqli);
 		echo(json_encode($link, JSON_UNESCAPED_SLASHES));
 		break;
 	case "GetLinks":
@@ -55,7 +59,11 @@ switch ($action) {
 		if(!preg_match($ck_sort, $sort)) {
 			error("id is not valid");
 		}
-		$links = getLinks($sort, $page, $mysqli);
+		
+		$key = $_POST['key'];
+		$user = getUser($key, $mysqli, false);
+		
+		$links = getLinks($sort, $page, $user, $mysqli);
 
 		echo(json_encode($links, JSON_UNESCAPED_SLASHES));
 
@@ -67,7 +75,9 @@ switch ($action) {
 		if(!preg_match($ck_username, $user) || !preg_match($ck_username, $type) || !preg_match($ck_username, $sort)) {
 			error("user is not valid");
 		}
-		$user = getUserHistory($user, $type, $sort,$mysqli);
+		$key = $_POST['key'];
+		$current_user = getUser($key, $mysqli, false);
+		$user = getUserHistory($user, $type, $sort, $current_user, $mysqli);
 		echo(json_encode($user, JSON_UNESCAPED_SLASHES));
 		break;
 	case "SignIn":
@@ -135,7 +145,10 @@ switch ($action) {
 		
 		$bloggerName = $mysqli->real_escape_string($bloggerName);
 		
-		$blogger = getBlogger($bloggerName, $sort, $mysqli);
+		$key = $_POST['key'];
+		$user = getUser($key, $mysqli, false);
+		
+		$blogger = getBlogger($bloggerName, $sort, $user, $mysqli);
 
 		echo(json_encode($blogger, JSON_UNESCAPED_SLASHES));
 
@@ -144,8 +157,8 @@ switch ($action) {
 		
 		$type = $_POST['type'];
 		$vote = $_POST['vote'];
-		
 		$id = $_POST['id'];
+		$key = $_POST['key'];
 		
 		if(!preg_match($ck_id, $id)) {
 			error("id is not valid");
@@ -160,12 +173,13 @@ switch ($action) {
 		
 		if($vote == "upvote") $voteType = "upvote";
 		else if($vote == "downvote") $voteType = "downvote";
+		else if($vote == "none") $voteType = "none";
 		else error("Invalid vote type");
 		
-		$key = $_POST['key'];
 		if(!preg_match($ck_key, $key)) {
 			error("key contains illegal characters");
 		}
+		
 		$user = getUser($key, $mysqli);
 		
 		echo(json_encode(addVote($user, $id, $dbType, $voteType, $mysqli)));

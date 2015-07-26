@@ -4,7 +4,27 @@ require_once('dbInfo.php');
 
 define("NUM_LINKS", 25);
 
-//encrypts the given password
+//returns the database used
+function getmysqli() {
+	$mysqli = new mysqli(MYSQLI_HOST, MYSQLI_USERNAME, MYSQLI_PASSWORD, MYSQLI_DB_NAME);
+	return $mysqli;
+}
+
+//gets a username with the specific key
+function getUser($key, $mysqli, $require = true) {
+	$sql = "SELECT `username` FROM `Sessions` WHERE `key` = '$key'";
+	
+	$row = query($sql, $mysqli);
+	
+	if(count($row) == 0) {
+		if($require) error("Please log in");
+		return "";
+	}
+	
+	return $row[0]["username"];
+}
+
+//helper method to encrypt the given password
 function cryptPass($input, $rounds = 12){ //Sequence - cryptPass, save hash in db, crypt(input, hash) == hash
 	$salt = "";
 	$saltChars = array_merge(range('A','Z'), range('a','z'), range(0,9));
@@ -52,13 +72,8 @@ function createUser($username, $newPass, $mysqli) {
 	}
 }
 
-//returns the database used
-function getmysqli() {
-	$mysqli = new mysqli(MYSQLI_HOST, MYSQLI_USERNAME, MYSQLI_PASSWORD, MYSQLI_DB_NAME);
-	return $mysqli;
-}
-
-function getLinks($sort, $page, $mysqli) {
+//returns a list of links with the given sort and page
+function getLinks($sort, $page, $user, $mysqli) {
 
 	$sort_type = getSortType($sort);
 	
@@ -66,11 +81,12 @@ function getLinks($sort, $page, $mysqli) {
 	
 	$sql = "SELECT * FROM `Links` ORDER BY $sort_type LIMIT $start_from, " . NUM_LINKS;
 
-	$links = query($sql, $mysqli);
+	$links = query_links($sql, $user, $mysqli);
 	
 	return $links;
 }
 
+//returns a list of bloggers with the given sort
 function getBloggers($sort, $mysqli) {
 	$sql = "SELECT * FROM `Links` WHERE `isBlogPost` = 1";
 	
@@ -99,34 +115,30 @@ function getBloggers($sort, $mysqli) {
 	return $bloggers_arr;
 }
 
-function getBlogger($name, $sort, $mysqli) {
+//returns the blogs for the given blogger
+function getBlogger($name, $sort, $user, $mysqli) {
 	$sort_type = getSortType($sort);
 	
 	$sql = "SELECT * FROM `Links` WHERE `bloggerName` = '$name' ORDER BY $sort_type";
 
-	$blogger_links = query($sql, $mysqli);
+	$blogger_links = query_links($sql, $user, $mysqli);
 	
 	return $blogger_links;
 }
 
-
-function getLink($id, $sort, $mysqli) {
-
-	$link = [];
-
-	$sql = "SELECT * FROM `Links` WHERE `id` = '$id'";
-	$link_row = query_one($sql, $mysqli);
-	$link["link"] = $link_row;
+//returns the info for a given link
+function getLink($id, $sort, $user, $mysqli) {
+	$link_sql = "SELECT * FROM `Links` WHERE `id` = '$id'";
 	
 	$sort_type = getSortType($sort);
-	$sql_comments = "SELECT * FROM `Comments` WHERE `parent` = '$id' ORDER BY $sort_type";
-	$comments = query($sql_comments, $mysqli);
-	$comments = sortComments($comments, "");
-	$link["comments"] = $comments;
+	$comment_sql = "SELECT * FROM `Comments` WHERE `parent` = '$id' ORDER BY $sort_type";
+	
+	$link = query_link($link_sql, $comment_sql, $user, $mysqli);
 	
 	return $link;
 }
 
+//gives the way the posts should be sorted
 function getSortType($sort) {
 	$sort_type = "date";
 	
@@ -139,22 +151,48 @@ function getSortType($sort) {
 	return $sort_type;
 }
 
-function getUserHistory($user, $type, $sort, $mysqli) {
+//adds the votes to the links/comments given for a specific username
+function addVotesToObjects($objects, $username, $mysqli) {
+	for($i=0; $i<count($objects); $i++) {
+		$objects[$i] = addVotesToObject($objects[$i], $username, $mysqli);
+	}
+	return $objects;
+}
+
+//adds the votes to the link/comment given for a specific username
+function addVotesToObject($object, $username, $mysqli) {
+	$id = $object["id"];
+	$sql = "SELECT * FROM `Votes` WHERE `id` = '$id' AND `username` = '$username'";
+	$result = query($sql, $mysqli);
+	
+	$voteType = "none";
+	
+	if(count($result) != 0) {
+		$voteType = $result[0]['voteType'];
+	}
+	
+	$object["voteType"] = $voteType;
+	return $object;
+}
+
+//gets the history for a specific user
+function getUserHistory($user, $type, $sort, $current_user, $mysqli) {
 	
 	$sort_type = getSortType($sort);
 	
 	$links = [];
 
 	$sql = "SELECT * FROM `Links` WHERE `author` = '$user' ORDER BY $sort_type";
-	$links = query($sql, $mysqli);
+	$links = query_links($sql, $current_user, $mysqli);
 	
 	$sql = "SELECT * FROM `Comments` WHERE `author` = '$user' ORDER BY $sort_type";
-	$comments = query($sql, $mysqli);
+	$comments = query_links($sql, $current_user, $mysqli);
 	
 	return ["user" => $user, "links" => $links, "comments" => $comments];
 	
 }
 
+//a generic query, returns an associative array
 function query($sql, $mysqli) {
 	$resultArray = [];
 	if($result = $mysqli->query($sql)) {
@@ -167,6 +205,7 @@ function query($sql, $mysqli) {
 	return $resultArray;
 }
 
+//queries exactly one row
 function query_one($sql, $mysqli) {
 	if($result = $mysqli->query($sql)) {
 	    if($result->num_rows == 1) {
@@ -180,7 +219,30 @@ function query_one($sql, $mysqli) {
 	}
 }
 
-function sortComments($comments, $parentComment) {
+//processes a number of posts
+function query_links($sql, $user, $mysqli) {
+	$links = addVotesToObjects(query($sql, $mysqli), $user, $mysqli);
+	return $links;
+}
+
+//processes one post
+function query_link($link_sql, $comments_sql, $user, $mysqli) {
+
+	$link = [];
+
+	$link_row = addVotesToObject(query_one($link_sql, $mysqli), $user, $mysqli);
+	$link["link"] = $link_row;
+	
+	$comments = query($comments_sql, $mysqli);
+	$comments = sortComments($comments);
+	$link["comments"] = addVotesToObjects($comments, $user, $mysqli);
+	
+	return $link;
+	
+}
+
+//sorts the comments for a post based on their parents
+function sortComments($comments, $parentComment = "") {
 	$sortedComments = [];
 	foreach($comments as $comment) {
 		if($comment["parentComment"] == $parentComment) { //on that level
@@ -194,6 +256,7 @@ function sortComments($comments, $parentComment) {
 	return $sortedComments;
 }
 
+//helper method for sortComments
 function hasComments($comments, $comment) {
 	foreach($comments as $checkComment) {
 		if($checkComment["parentComment"] == $comment["id"]) return true;
@@ -201,6 +264,7 @@ function hasComments($comments, $comment) {
 	return false;
 }
 
+//uploads a post with the given parameters
 function uploadPost($url, $title, $text, $author, $bloggerName, $mysqli) {
 	
 	$id = substr(md5(microtime()),rand(0,26),6);
@@ -218,6 +282,7 @@ function uploadPost($url, $title, $text, $author, $bloggerName, $mysqli) {
 	
 }
 
+//adds a comment with the given parameters
 function addComment($parentID, $parentCommentID, $text, $author, $mysqli) {
 	
 	$id = substr(md5(microtime()),rand(0,26),6);
@@ -242,16 +307,28 @@ function addComment($parentID, $parentCommentID, $text, $author, $mysqli) {
 	return true;
 }
 
+//adds a vote with the given parameters
 function addVote($user, $id, $dbType, $voteType, $mysqli) {
 	$sql = "SELECT `voteType` FROM `Votes` WHERE `username` = '$user' AND `id` = '$id'";
 	
 	$row = query($sql, $mysqli);
 	
-	if(count($row) != 0) error("user has already voted");
-	
 	$sql = "INSERT INTO `Votes`(`username`, `type`, `id`, `voteType`) VALUES ('$user', '$dbType', '$id', '$voteType')";
 	
+	$lastType = "none";
+	if(count($row) != 0) {
+		$lastType = $row[0]['voteType'];
+		$sql = "UPDATE `Votes` SET `type` = '$dbType', `voteType` = '$voteType' WHERE `username` = '$user' AND `id` = '$id'";
+	}
+	
 	if($mysqli->query($sql)) {
+	
+		if($lastType != "none") {
+			incrementValue($id, getVoteColumnType($lastType), $dbType, $mysqli, -1);
+		}
+	
+		incrementValue($id, getVoteColumnType($voteType), $dbType, $mysqli, 1);
+			
 		return ["success" => "true"];
 	} else {
 		error("could not add vote");
@@ -259,17 +336,27 @@ function addVote($user, $id, $dbType, $voteType, $mysqli) {
 	
 }
 
-function incrementValue($id, $column, $type, $mysqli) { //$column: column to increment like numComments, numUpvotes..., $type: table to increment, Links or Comments
+function getVoteColumnType($voteType) {
+	$voteColumnType = "";
+	if($voteType == "upvote") $voteColumnType = "numUpvotes";
+	else if($voteType == "downvote") $voteColumnType = "numDownvotes";
+	if($voteColumnType == "") error("invalid vote type");
+	return $voteColumnType;
+}
+
+//generic function to increment a value in the database
+function incrementValue($id, $column, $type, $mysqli, $increment = 1) { //$column: column to increment like numComments, numUpvotes..., $type: table to increment, Links or Comments
 
 	$previousValue = getValue($id, $column, $type, $mysqli);
 
-	$newValue = $previousValue + 1;
+	$newValue = $previousValue + $increment;
 	
 	updateValue($id, $column, $type, $newValue, $mysqli);
 
 	
 }
 
+//generic function to get a value from the database
 function getValue($id, $column, $type, $mysqli) {
 	
 	$value = 0;
@@ -283,8 +370,9 @@ function getValue($id, $column, $type, $mysqli) {
 	return $value;
 }
 
+//generic function to update a value in the database
 function updateValue($id, $column, $type, $newValue, $mysqli) {
-	$sql = "UPDATE `Links` SET `$column`= $newValue WHERE `id` = '$id'";
+	$sql = "UPDATE `$type` SET `$column`= $newValue WHERE `id` = '$id'";
 	if($mysqli->query($sql)) {
 		return true;
 	} else {
@@ -292,14 +380,7 @@ function updateValue($id, $column, $type, $newValue, $mysqli) {
 	}
 }
 
-function getUser($key, $mysqli) {
-	$sql = "SELECT `username` FROM `Sessions` WHERE `key` = '$key'";
-	
-	$row = query_one($sql, $mysqli);
-	
-	return $row["username"];
-}
-
+//terminates the program with an error
 function error($message) {
 	die(json_encode(["error" => $message], JSON_UNESCAPED_SLASHES));
 }
