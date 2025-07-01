@@ -12,9 +12,12 @@ function getmysqli() {
 
 //gets a username with the specific key
 function getUser($key, $mysqli, $require = true) {
-	$sql = "SELECT `username` FROM `Sessions` WHERE `key` = '$key'";
-	
-	$row = query($sql, $mysqli);
+	$stmt = $mysqli->prepare("SELECT `username` FROM `Sessions` WHERE `key` = ?");
+	$stmt->bind_param("s", $key);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_all(MYSQLI_ASSOC);
+	$stmt->close();
 	
 	if(count($row) == 0) {
 		if($require) error("Please log in");
@@ -36,19 +39,31 @@ function cryptPass($input, $rounds = 12){ //Sequence - cryptPass, save hash in d
 
 //signs in a user with the username and password given
 function signIn($username, $password, $mysqli) {
-	$sql = "SELECT `username`, `password` FROM `Users` WHERE username = '$username'";
-	$row = query_one($sql, $mysqli);
-	$hashedPass = $row["password"];
-	if(crypt($password, $hashedPass) == $hashedPass) {
-		$key = uniqid();
-		$sql = "INSERT INTO `Sessions`(`key`, `username`) VALUES ('$key', '$username')";
-		if(!$mysqli->query($sql)) {
-			error("could not log in");
+	$stmt = $mysqli->prepare("SELECT `username`, `password` FROM `Users` WHERE username = ?");
+	$stmt->bind_param("s", $username);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows == 1) {
+		$row = $result->fetch_array(MYSQLI_ASSOC);
+		$stmt->close();
+		$hashedPass = $row["password"];
+		if(crypt($password, $hashedPass) == $hashedPass) {
+			$key = uniqid();
+			$stmt = $mysqli->prepare("INSERT INTO `Sessions`(`key`, `username`) VALUES (?, ?)");
+			$stmt->bind_param("ss", $key, $username);
+			if(!$stmt->execute()) {
+				$stmt->close();
+				error("could not log in");
+			}
+			$stmt->close();
+			
+			return $key;
+			
+		} else {
+			error("wrong username/password");
 		}
-		
-		return $key;
-		
 	} else {
+		$stmt->close();
 		error("wrong username/password");
 	}
 }
@@ -56,19 +71,23 @@ function signIn($username, $password, $mysqli) {
 //creates a user with the username and password given
 function createUser($username, $newPass, $mysqli) {
 	$hashedPass = cryptPass($newPass);
-	$sql = "SELECT `username` FROM `Users` WHERE username = '$username'";
-	if($result = $mysqli->query($sql)) {
-		if($result->num_rows == 0) {
-			$sql = "INSERT INTO `Users`(`username`, `password`) VALUES ('$username', '$hashedPass')";
-			if(!$mysqli->query($sql)) {
-				error("could not create user");
-			}
-			return signIn($username, $newPass, $mysqli);
-		} else {
-			error("username already used");
+	$stmt = $mysqli->prepare("SELECT `username` FROM `Users` WHERE username = ?");
+	$stmt->bind_param("s", $username);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows == 0) {
+		$stmt->close();
+		$stmt = $mysqli->prepare("INSERT INTO `Users`(`username`, `password`) VALUES (?, ?)");
+		$stmt->bind_param("ss", $username, $hashedPass);
+		if(!$stmt->execute()) {
+			$stmt->close();
+			error("could not create user");
 		}
+		$stmt->close();
+		return signIn($username, $newPass, $mysqli);
 	} else {
-		error("could not create user");
+		$stmt->close();
+		error("username already used");
 	}
 }
 
@@ -119,23 +138,46 @@ function getBloggers($sort, $mysqli) {
 function getBlogger($name, $sort, $user, $mysqli) {
 	$sort_type = getSortType($sort);
 	
-	$sql = "SELECT * FROM `Links` WHERE `bloggerName` = '$name' ORDER BY $sort_type";
+	$stmt = $mysqli->prepare("SELECT * FROM `Links` WHERE `bloggerName` = ? ORDER BY $sort_type");
+	$stmt->bind_param("s", $name);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$links = $result->fetch_all(MYSQLI_ASSOC);
+	$stmt->close();
 
-	$blogger_links = query_links($sql, $user, $mysqli);
+	$blogger_links = addVotesToObjects($links, $user, $mysqli);
 	
 	return $blogger_links;
 }
 
 //returns the info for a given link
 function getLink($id, $sort, $user, $mysqli) {
-	$link_sql = "SELECT * FROM `Links` WHERE `id` = '$id'";
-	
-	$sort_type = getSortType($sort);
-	$comment_sql = "SELECT * FROM `Comments` WHERE `parent` = '$id' ORDER BY $sort_type";
-	
-	$link = query_link($link_sql, $comment_sql, $user, $mysqli);
-	
-	return $link;
+	$stmt = $mysqli->prepare("SELECT * FROM `Links` WHERE `id` = ?");
+	$stmt->bind_param("s", $id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows == 1) {
+		$link_row = $result->fetch_array(MYSQLI_ASSOC);
+		$stmt->close();
+		
+		$sort_type = getSortType($sort);
+		$stmt = $mysqli->prepare("SELECT * FROM `Comments` WHERE `parent` = ? ORDER BY $sort_type");
+		$stmt->bind_param("s", $id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$comments = $result->fetch_all(MYSQLI_ASSOC);
+		$stmt->close();
+		
+		$link = [];
+		$link["link"] = addVotesToObject($link_row, $user, $mysqli);
+		$comments = sortComments($comments);
+		$link["comments"] = addVotesToObjects($comments, $user, $mysqli);
+		
+		return $link;
+	} else {
+		$stmt->close();
+		error("could not query");
+	}
 }
 
 //gives the way the posts should be sorted
@@ -272,11 +314,13 @@ function uploadPost($url, $title, $text, $author, $bloggerName, $mysqli) {
 	$isBlogPost = $bloggerName != "";
 	$isSelf = $text != "";
 	
-	$sql = "INSERT INTO `Links`(`id`, `url`, `selfText`, `title`, `isBlogPost`, `isSelf`, `bloggerName`, `author`) VALUES ('$id', '$url', '$text', '$title', '$isBlogPost', '$isSelf', '$bloggerName', '$author')";
-	if($mysqli->query($sql)) {
-		
-		return getLink($id, "new", $mysqli);
+	$stmt = $mysqli->prepare("INSERT INTO `Links`(`id`, `url`, `selfText`, `title`, `isBlogPost`, `isSelf`, `bloggerName`, `author`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+	$stmt->bind_param("ssssiiis", $id, $url, $text, $title, $isBlogPost, $isSelf, $bloggerName, $author);
+	if($stmt->execute()) {
+		$stmt->close();
+		return getLink($id, "new", $author, $mysqli);
 	} else {
+		$stmt->close();
 		error("could not add link");
 	}
 	
