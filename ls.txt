@@ -1,0 +1,15 @@
+.
+..
+.bash_logout
+.bashrc
+.cache
+.config
+.cursor-nightly
+.cursor-server
+.gitconfig
+.hushlogin
+.npm
+.nvm
+.pki
+.profile
+.vm-daemon
