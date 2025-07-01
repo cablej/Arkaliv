@@ -1,0 +1,302 @@
+.:
+total 48
+drwxr-xr-x 1 ubuntu ubuntu   169 Jul  1 04:03 .
+drwxr-xr-x 1 root   root      46 Jul  1 03:54 ..
+-rw-r--r-- 1 ubuntu ubuntu 11185 Jul  1 04:00 aux.txt
+drwxr-xr-x 1 ubuntu ubuntu   124 Jul  1 04:03 .git
+-rw-r--r-- 1 ubuntu ubuntu    12 Jul  1 03:54 .gitignore
+-rw-r--r-- 1 ubuntu ubuntu     0 Jul  1 04:03 ls2.txt
+-rw-r--r-- 1 ubuntu ubuntu   129 Jul  1 04:02 ls.txt
+-rw-r--r-- 1 ubuntu ubuntu   228 Jul  1 03:54 README.md
+-rwxr-xr-x 1 ubuntu ubuntu  5588 Jul  1 03:54 request.php
+-rwxr-xr-x 1 ubuntu ubuntu 10935 Jul  1 03:54 SQLTools.php
+-rw-r--r-- 1 ubuntu ubuntu     0 Jul  1 04:00 test2.txt
+-rw-r--r-- 1 ubuntu ubuntu  1241 Jul  1 03:59 test.txt
+
+./.git:
+total 32
+drwxr-xr-x 1 ubuntu ubuntu  124 Jul  1 04:03 .
+drwxr-xr-x 1 ubuntu ubuntu  169 Jul  1 04:03 ..
+-rw-r--r-- 1 ubuntu ubuntu   99 Jul  1 04:02 COMMIT_EDITMSG
+-rw-r--r-- 1 ubuntu ubuntu  467 Jul  1 04:02 config
+-rw-r--r-- 1 ubuntu ubuntu   73 Jul  1 03:52 description
+-rw-r--r-- 1 ubuntu ubuntu   95 Jul  1 04:02 FETCH_HEAD
+-rw-r--r-- 1 ubuntu ubuntu   56 Jul  1 03:54 HEAD
+drwxr-xr-x 2 ubuntu ubuntu 4096 Jul  1 03:52 hooks
+-rw-r--r-- 1 ubuntu ubuntu  993 Jul  1 04:03 index
+drwxr-xr-x 2 ubuntu ubuntu   21 Jul  1 03:52 info
+drwxr-xr-x 1 ubuntu ubuntu   30 Jul  1 03:52 logs
+drwxr-xr-x 1 ubuntu ubuntu  186 Jul  1 04:02 objects
+-rw-r--r-- 1 ubuntu ubuntu  114 Jul  1 03:52 packed-refs
+drwxr-xr-x 1 ubuntu ubuntu   34 Jul  1 03:52 refs
+
+./.git/hooks:
+total 68
+drwxr-xr-x 2 ubuntu ubuntu 4096 Jul  1 03:52 .
+drwxr-xr-x 1 ubuntu ubuntu  124 Jul  1 04:03 ..
+-rwxr-xr-x 1 ubuntu ubuntu  478 Jul  1 03:52 applypatch-msg.sample
+-rwxr-xr-x 1 ubuntu ubuntu  896 Jul  1 03:52 commit-msg.sample
+-rwxr-xr-x 1 ubuntu ubuntu 4726 Jul  1 03:52 fsmonitor-watchman.sample
+-rwxr-xr-x 1 ubuntu ubuntu  189 Jul  1 03:52 post-update.sample
+-rwxr-xr-x 1 ubuntu ubuntu  424 Jul  1 03:52 pre-applypatch.sample
+-rwxr-xr-x 1 ubuntu ubuntu 1649 Jul  1 03:52 pre-commit.sample
+-rwxr-xr-x 1 ubuntu ubuntu  416 Jul  1 03:52 pre-merge-commit.sample
+-rwxr-xr-x 1 ubuntu ubuntu 1492 Jul  1 03:52 prepare-commit-msg.sample
+-rwxr-xr-x 1 ubuntu ubuntu 1374 Jul  1 03:52 pre-push.sample
+-rwxr-xr-x 1 ubuntu ubuntu 4898 Jul  1 03:52 pre-rebase.sample
+-rwxr-xr-x 1 ubuntu ubuntu  544 Jul  1 03:52 pre-receive.sample
+-rwxr-xr-x 1 ubuntu ubuntu 2783 Jul  1 03:52 push-to-checkout.sample
+-rwxr-xr-x 1 ubuntu ubuntu 2308 Jul  1 03:52 sendemail-validate.sample
+-rwxr-xr-x 1 ubuntu ubuntu 3650 Jul  1 03:52 update.sample
+
+./.git/info:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  21 Jul  1 03:52 .
+drwxr-xr-x 1 ubuntu ubuntu 124 Jul  1 04:03 ..
+-rw-r--r-- 1 ubuntu ubuntu 240 Jul  1 03:52 exclude
+
+./.git/logs:
+total 4
+drwxr-xr-x 1 ubuntu ubuntu   30 Jul  1 03:52 .
+drwxr-xr-x 1 ubuntu ubuntu  124 Jul  1 04:03 ..
+-rw-r--r-- 1 ubuntu ubuntu 1739 Jul  1 04:02 HEAD
+drwxr-xr-x 1 ubuntu ubuntu   34 Jul  1 03:52 refs
+
+./.git/logs/refs:
+total 0
+drwxr-xr-x 1 ubuntu ubuntu 34 Jul  1 03:52 .
+drwxr-xr-x 1 ubuntu ubuntu 30 Jul  1 03:52 ..
+drwxr-xr-x 1 ubuntu ubuntu 20 Jul  1 03:54 heads
+drwxr-xr-x 1 ubuntu ubuntu 20 Jul  1 03:52 remotes
+
+./.git/logs/refs/heads:
+total 4
+drwxr-xr-x 1 ubuntu ubuntu  20 Jul  1 03:54 .
+drwxr-xr-x 1 ubuntu ubuntu  34 Jul  1 03:52 ..
+drwxr-xr-x 2 ubuntu ubuntu  46 Jul  1 03:54 cursor
+-rw-r--r-- 1 ubuntu ubuntu 175 Jul  1 03:52 master
+
+./.git/logs/refs/heads/cursor:
+total 128
+drwxr-xr-x 2 ubuntu ubuntu   46 Jul  1 03:54 .
+drwxr-xr-x 1 ubuntu ubuntu   20 Jul  1 03:54 ..
+-rw-r--r-- 1 ubuntu ubuntu 1282 Jul  1 04:02 print-environment-variables-29a6
+
+./.git/logs/refs/remotes:
+total 0
+drwxr-xr-x 1 ubuntu ubuntu 20 Jul  1 03:52 .
+drwxr-xr-x 1 ubuntu ubuntu 34 Jul  1 03:52 ..
+drwxr-xr-x 1 ubuntu ubuntu 20 Jul  1 03:58 origin
+
+./.git/logs/refs/remotes/origin:
+total 4
+drwxr-xr-x 1 ubuntu ubuntu  20 Jul  1 03:58 .
+drwxr-xr-x 1 ubuntu ubuntu  20 Jul  1 03:52 ..
+drwxr-xr-x 2 ubuntu ubuntu  46 Jul  1 03:58 cursor
+-rw-r--r-- 1 ubuntu ubuntu 175 Jul  1 03:52 HEAD
+
+./.git/logs/refs/remotes/origin/cursor:
+total 128
+drwxr-xr-x 2 ubuntu ubuntu  46 Jul  1 03:58 .
+drwxr-xr-x 1 ubuntu ubuntu  20 Jul  1 03:58 ..
+-rw-r--r-- 1 ubuntu ubuntu 760 Jul  1 04:02 print-environment-variables-29a6
+
+./.git/objects:
+total 4
+drwxr-xr-x 1 ubuntu ubuntu  186 Jul  1 04:02 .
+drwxr-xr-x 1 ubuntu ubuntu  124 Jul  1 04:03 ..
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 03:59 05
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 04:01 16
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 03:59 18
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 03:59 2a
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 04:00 3a
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 03:59 49
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 03:59 6b
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 04:02 72
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 04:02 87
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 04:00 88
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 03:58 97
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 03:59 9a
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 03:58 9d
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 04:01 9f
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 04:01 c4
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 04:02 c9
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 03:58 e5
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 04:00 e6
+drwxr-xr-x 2 ubuntu ubuntu    6 Jul  1 03:52 info
+drwxr-xr-x 2 ubuntu ubuntu 4096 Jul  1 03:52 pack
+
+./.git/objects/05:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 03:59 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu  28 Jul  1 03:59 9086e3d93137dcbb563181c342b0feef2913a7
+
+./.git/objects/16:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu   52 Jul  1 04:01 .
+drwxr-xr-x 1 ubuntu ubuntu  186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 2270 Jul  1 04:01 e431249e3628d5c03467bad18f04664877ab37
+
+./.git/objects/18:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 03:59 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 505 Jul  1 03:59 cac999261cdd73d52049241fb462a8e70f4073
+
+./.git/objects/2a:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 03:59 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 207 Jul  1 03:59 bdfc2e1fc485ed362993e4083d1e235ee3b4b3
+
+./.git/objects/3a:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 04:00 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 218 Jul  1 04:00 87718562e6b66d6a0439ea5b475092a5262382
+
+./.git/objects/49:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 03:59 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 202 Jul  1 03:59 3c641dd489e81601ae2095e190d7c42fdd757f
+
+./.git/objects/6b:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 03:59 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 218 Jul  1 03:59 cf008ebcd4174be28eb612205cc2978f35a9bb
+
+./.git/objects/72:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 04:02 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 275 Jul  1 04:02 37bf28a562f444900342c3dca7eef60c84f61a
+
+./.git/objects/87:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 04:02 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 111 Jul  1 04:02 8a943a327c9e43e01b9e98d2b7925a540ce495
+
+./.git/objects/88:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 04:00 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 176 Jul  1 04:00 fac44d089e1b7370ce726661ceed95f11a00cc
+
+./.git/objects/97:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 03:58 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 192 Jul  1 03:58 2968b76b33b360255eb47056eafcaf554bacac
+
+./.git/objects/9a:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 03:59 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 191 Jul  1 03:59 9b53595000cfba4e998859b53734624b00e9ad
+
+./.git/objects/9d:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 03:58 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu  20 Jul  1 03:58 aeafb9864cf43055ae93beb0afd6c7d144bfa4
+
+./.git/objects/9f:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 04:01 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 247 Jul  1 04:01 6c8d7919c44e4c58aa4ffab6493ea7740d1905
+
+./.git/objects/c4:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 04:01 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 215 Jul  1 04:01 d21ed77729f3465b22f484a43e1008524b2f3d
+
+./.git/objects/c9:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 04:02 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 214 Jul  1 04:02 c8910c3f8186bd7ec76c78a325b7639a945e71
+
+./.git/objects/e5:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 03:58 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 213 Jul  1 03:58 cb8c7b7fe4ce938e68c6418c3a9ccf9ac014bf
+
+./.git/objects/e6:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu  52 Jul  1 04:00 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu  15 Jul  1 04:00 9de29bb2d1d6434b8b29ae775ad8c2e48c5391
+
+./.git/objects/info:
+total 0
+drwxr-xr-x 2 ubuntu ubuntu   6 Jul  1 03:52 .
+drwxr-xr-x 1 ubuntu ubuntu 186 Jul  1 04:02 ..
+
+./.git/objects/pack:
+total 48
+drwxr-xr-x 2 ubuntu ubuntu 4096 Jul  1 03:52 .
+drwxr-xr-x 1 ubuntu ubuntu  186 Jul  1 04:02 ..
+-r--r--r-- 1 ubuntu ubuntu 1184 Jul  1 03:52 pack-3f20f3795b9439f8386ee56a5c90e9ce0dfee9c6.idx
+-r--r--r-- 1 ubuntu ubuntu 4690 Jul  1 03:52 pack-3f20f3795b9439f8386ee56a5c90e9ce0dfee9c6.pack
+-rw------- 1 ubuntu ubuntu    0 Jul  1 03:52 pack-3f20f3795b9439f8386ee56a5c90e9ce0dfee9c6.promisor
+-r--r--r-- 1 ubuntu ubuntu   68 Jul  1 03:52 pack-3f20f3795b9439f8386ee56a5c90e9ce0dfee9c6.rev
+-r--r--r-- 1 ubuntu ubuntu 1100 Jul  1 03:52 pack-a4e21988ea08f92037f97e6a32221c3ace426e8f.idx
+-r--r--r-- 1 ubuntu ubuntu  187 Jul  1 03:52 pack-a4e21988ea08f92037f97e6a32221c3ace426e8f.pack
+-rw------- 1 ubuntu ubuntu    0 Jul  1 03:52 pack-a4e21988ea08f92037f97e6a32221c3ace426e8f.promisor
+-r--r--r-- 1 ubuntu ubuntu   56 Jul  1 03:52 pack-a4e21988ea08f92037f97e6a32221c3ace426e8f.rev
+-r--r--r-- 1 ubuntu ubuntu 1184 Jul  1 03:52 pack-ab8b39edd21e0a37c56d553077a0f0ff38b31c3f.idx
+-r--r--r-- 1 ubuntu ubuntu  701 Jul  1 03:52 pack-ab8b39edd21e0a37c56d553077a0f0ff38b31c3f.pack
+-rw------- 1 ubuntu ubuntu  105 Jul  1 03:52 pack-ab8b39edd21e0a37c56d553077a0f0ff38b31c3f.promisor
+-r--r--r-- 1 ubuntu ubuntu   68 Jul  1 03:52 pack-ab8b39edd21e0a37c56d553077a0f0ff38b31c3f.rev
+
+./.git/refs:
+total 0
+drwxr-xr-x 1 ubuntu ubuntu  34 Jul  1 03:52 .
+drwxr-xr-x 1 ubuntu ubuntu 124 Jul  1 04:03 ..
+drwxr-xr-x 1 ubuntu ubuntu  20 Jul  1 03:54 heads
+drwxr-xr-x 1 ubuntu ubuntu  20 Jul  1 03:52 remotes
+drwxr-xr-x 2 ubuntu ubuntu   6 Jul  1 03:52 tags
+
+./.git/refs/heads:
+total 4
+drwxr-xr-x 1 ubuntu ubuntu 20 Jul  1 03:54 .
+drwxr-xr-x 1 ubuntu ubuntu 34 Jul  1 03:52 ..
+drwxr-xr-x 2 ubuntu ubuntu 46 Jul  1 04:02 cursor
+-rw-r--r-- 1 ubuntu ubuntu 41 Jul  1 03:52 master
+
+./.git/refs/heads/cursor:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu 46 Jul  1 04:02 .
+drwxr-xr-x 1 ubuntu ubuntu 20 Jul  1 03:54 ..
+-rw-r--r-- 1 ubuntu ubuntu 41 Jul  1 04:02 print-environment-variables-29a6
+
+./.git/refs/remotes:
+total 0
+drwxr-xr-x 1 ubuntu ubuntu 20 Jul  1 03:52 .
+drwxr-xr-x 1 ubuntu ubuntu 34 Jul  1 03:52 ..
+drwxr-xr-x 1 ubuntu ubuntu 20 Jul  1 03:58 origin
+
+./.git/refs/remotes/origin:
+total 4
+drwxr-xr-x 1 ubuntu ubuntu 20 Jul  1 03:58 .
+drwxr-xr-x 1 ubuntu ubuntu 20 Jul  1 03:52 ..
+drwxr-xr-x 2 ubuntu ubuntu 46 Jul  1 04:02 cursor
+-rw-r--r-- 1 ubuntu ubuntu 32 Jul  1 03:52 HEAD
+
+./.git/refs/remotes/origin/cursor:
+total 4
+drwxr-xr-x 2 ubuntu ubuntu 46 Jul  1 04:02 .
+drwxr-xr-x 1 ubuntu ubuntu 20 Jul  1 03:58 ..
+-rw-r--r-- 1 ubuntu ubuntu 41 Jul  1 04:02 print-environment-variables-29a6
+
+./.git/refs/tags:
+total 0
+drwxr-xr-x 2 ubuntu ubuntu  6 Jul  1 03:52 .
+drwxr-xr-x 1 ubuntu ubuntu 34 Jul  1 03:52 ..
